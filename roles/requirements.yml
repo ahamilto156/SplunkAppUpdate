@@ -1,0 +1,5 @@
+# Because https://github.com/splunk/splunk-ansible is still in development phase, I assume that is why the roles are not available. 
+# Hence I have cloned them and copied the tasks to SplunkAppUpdate/tasks. Maybe in the future I may be able to replace those tasks with 
+#  downloaded roles...
+# - src: https://github.com/splunk/splunk-ansible/tree/develop/roles/splunk_deployer.git
+#   scm: git

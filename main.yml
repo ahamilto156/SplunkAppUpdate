@@ -1,0 +1,3 @@
+---
+# Update a single app on the Splunk search heads via the deployer
+- import_playbook: tasks/update_single_app.yml
