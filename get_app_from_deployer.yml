@@ -1,0 +1,9 @@
+---
+- name: Get application from deployer
+  become_user: splunk
+  hosts: deployer
+  vars_files:
+  - splunk_vault.yml
+  tasks:
+    - include_tasks: tasks/fetch_single_app.yml
+  

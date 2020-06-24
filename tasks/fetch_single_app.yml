@@ -1,0 +1,8 @@
+  - name: tar up app tree on deployment server
+
+  - name: Fetch tarball
+    fetch:
+      src: "{{ deployer }}/{{ splunk.apps_location }}/{{ app_name }}"
+      dest: "{{ app_developers_locn }}/{{ app_name }}"
+
+  - name: Place onto local server

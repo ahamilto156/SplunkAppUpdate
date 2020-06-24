@@ -1,0 +1,17 @@
+---
+# The following playbook assumes [despite what assuming does] that the apps tree is populated.
+# ... If not, then the reloading of the deployment server will uninstall all the missing applications
+- name: Deploy a single (manually) update app)
+  become_user: splunk
+  hosts: deployer
+  vars_files:
+  - splunk_vault.yml
+  
+  tasks:
+    - include_tasks: tasks/create_deployment_apps.yml
+      when:
+        - splunk.apps_location
+
+    - include_tasks: tasks/copy_single_app.yml
+
+    - include_tasks: tasks/check_for_required_restarts.yml

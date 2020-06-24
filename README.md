@@ -25,11 +25,14 @@ vim hosts ###for hosts configuration
 cd  .../SplunkAppUpdate
 ./initialiseRepo.sh
 
-## Execution
-ansible-playbook -kK SplunkAppUpdate.yml
+## Method
+ansible-playbook -kK get_app_from_deployer.yml -e ${Application_Name}[,local]
+Edit the application
+ansible-playbook -kK put_app_to_deployer.yml -e ${Application_Name}[,local]
+
 
 ### NOTES:
-1/ 
+1/ The local is if it is a local app that is not to be deployed to ALL search heads
 
 ## License
 Free

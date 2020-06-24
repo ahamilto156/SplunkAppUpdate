@@ -1,7 +1,10 @@
----
+- name: Create tar ball for deployment of app
+
 - name: Copy app to deployment server
+  become: yes
+  become_user: "{{ splunk.user }}"
   file:
-    path: splunk.apps_location
+    path: "{{splunk.apps_location}}"
     state: present
     owner: splunk
     group: splunk
