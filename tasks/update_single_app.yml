@@ -1,11 +1,18 @@
 ---
-- include_tasks: ../../../roles/splunk_common/tasks/enable_forwarding.yml
+# The following playbook assumes [despite what assuming does] that the apps tree is populated.
+# ... If not, then the reloading of the deployment server will uninstall all the missing applications
 
 - include_tasks: create_deployment_apps.yml
   when:
     - splunk.apps_location
 
-- include_tasks: generate_server_classes.yml
+- name: Copy app to deployment server
+  file:
+    path: TBA
+    state: present
+    owner: splunk
+    group: splunk
+    mode: '0700'    
 
 - name: Reload deployment server
   command: "{{ splunk.exec }} reload deploy-server -auth {{ splunk.admin_user }}:{{ splunk.password }} -timeout {{ retry_delay * retry_num }}"
@@ -19,4 +26,4 @@
   ignore_errors: yes
   no_log: "{{ hide_password }}"
 
-- include_tasks: ../../../roles/splunk_common/tasks/check_for_required_restarts.yml
+- include_tasks: tasks/check_for_required_restarts.yml
