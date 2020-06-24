@@ -1,14 +1,7 @@
 ---
-# The following playbook assumes [despite what assuming does] that the apps tree is populated.
-# ... If not, then the reloading of the deployment server will uninstall all the missing applications
-
-- include_tasks: create_deployment_apps.yml
-  when:
-    - splunk.apps_location
-
 - name: Copy app to deployment server
   file:
-    path: TBA
+    path: splunk.apps_location
     state: present
     owner: splunk
     group: splunk
@@ -25,5 +18,3 @@
   delay: "{{ retry_delay }}"
   ignore_errors: yes
   no_log: "{{ hide_password }}"
-
-- include_tasks: tasks/check_for_required_restarts.yml
