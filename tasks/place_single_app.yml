@@ -1,23 +1,14 @@
 - name: Create archive on local server of app tree
-
+  hosts: localhost
+  become: no
+  #See "archive-doc archive" for src & dest. e.g's.
+  archive:
+    path: "{{ sapp.location }}/{{ sapp.name }}"
+    dest: "{{ sapp.tempfile.archname }}"
+    format: bz2
+    
 - name: Copy archived file to deployment server
-  become: yes
-  become_user: "{{ splunk.user }}"
-  file:
-    path: "{{splunk.apps_location}}"
-    state: present
-    owner: splunk
-    group: splunk
-    mode: '0700'    
+  include_tasks: tasks/put_app_op_deployer.yml    
 
 - name: Reload deployment server
-  command: "{{ splunk.exec }} reload deploy-server -auth {{ splunk.admin_user }}:{{ splunk.password }} -timeout {{ retry_delay * retry_num }}"
-  become: yes
-  become_user: "{{ splunk.user }}"
-  register: reload_depserver
-  until: reload_depserver.rc == 0
-  changed_when: reload_depserver.rc == 0
-  retries: "{{ retry_num }}"
-  delay: "{{ retry_delay }}"
-  ignore_errors: yes
-  no_log: "{{ hide_password }}"
+  include_tasks: tasks/initate_deployment.yml

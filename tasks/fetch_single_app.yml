@@ -7,10 +7,13 @@
 
 - name: Fetch archived app from deployer
   fetch:
-    src: "/var/tmp/{{ sapp.name }}.bz2"
+    src: "{{ sapp.tempfile.arch_name }}"
     dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
 
 - name: Unarchive (gunzip) the received tarball
   unarchive:
     src: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
     dest: "{{ sapp.edit.path }}/"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: '0700'

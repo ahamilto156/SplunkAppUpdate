@@ -1,6 +1,7 @@
 ---
 - name: Ensure developer has a copy of the app directory where he/she wants it
   hosts: localhost
+  become: no
   tasks:
   - name: Create {{ sapp.edit.path }} directory on localhost
     file:

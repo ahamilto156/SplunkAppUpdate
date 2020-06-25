@@ -1,10 +1,15 @@
 sapp:
-  name: blah
-  type: shared
-  edit:
-    path: "{{ ansible_user_dir }}/{{ sapp.name }}"
-  source:
-    path: "{{ splunk_home }}/etc/apps/local/{{ sapp.name }}"
-  tempfile:
-    path: "/var/tmp/{{ sapp.nam }}"
-    arch_name: "{{ sapp.tempfile.path }}.bz2"
+  - name: blah
+    type: shared
+    edit:
+      path: "{{ ansible_user_dir }}/{{ sapp.name }}"
+    source:
+      path: "{{ splunk_home }}/etc/apps/{{ sapp.type }}/{{ sapp.name }}"
+    tempfile:
+      path: "/var/tmp"
+      arch_name: "{{ sapp.tempfile.path }}/{{ sapp.name }}.bz2"
+
+deployer_push_mode: full  #Default setting
+    when: "{{ sapp.type }}" == shared
+deployer_push_mode: local
+    when: "{{ sapp.type }}" == local
