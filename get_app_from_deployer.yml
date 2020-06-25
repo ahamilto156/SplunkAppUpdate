@@ -1,8 +1,20 @@
 ---
+- name: Ensure developer has a copy of the app directory where he/she wants it
+  hosts: localhost
+  tasks:
+  - name: Create {{ sapp.edit.path }} directory on localhost
+    file:
+      dest: "{{ sapp.edit.path }}"
+      state: directory
+      owner: "{{ ansible_user_uid }}"
+      group: "{{ ansible_user_gid }}"
+      mode: '0700'
+        
 - name: Get application from deployer
   become_user: splunk
   hosts: deployer
   vars_files:
+  - vars/single_app.yml
   - splunk_vault.yml
   tasks:
     - include_tasks: tasks/fetch_single_app.yml

@@ -1,6 +1,6 @@
-- name: Create tar ball for deployment of app
+- name: Create archive on local server of app tree
 
-- name: Copy app to deployment server
+- name: Copy archived file to deployment server
   become: yes
   become_user: "{{ splunk.user }}"
   file:

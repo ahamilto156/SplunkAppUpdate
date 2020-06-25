@@ -26,9 +26,9 @@ cd  .../SplunkAppUpdate
 ./initialiseRepo.sh
 
 ## Method
-ansible-playbook -kK get_app_from_deployer.yml -e ${Application_Name}[,local]
+ansible-playbook -kK get_app_from_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 Edit the application
-ansible-playbook -kK put_app_to_deployer.yml -e ${Application_Name}[,local]
+ansible-playbook -kK put_app_to_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 
 
 ### NOTES:
