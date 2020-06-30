@@ -1,21 +1,15 @@
-  vars_files:
-  - splunk_vault.yml
+include_vars: ../splunk_vault.yml
 
 sapp:
-  - name: blah
+  - name: "{{ sapp.name }}"
     type: shared
-    edit:
+    app_edit:
       path: "{{ ansible_user_dir }}/{{ sapp.name }}"
-    source:
+    app_source:
       path: "{{ splunk_home }}/etc/apps/{{ sapp.type }}/{{ sapp.name }}"
     tempfile:
       path: "/var/tmp"
       arch_name: "{{ sapp.tempfile.path }}/{{ sapp.name }}.bz2"
-
-deployer_push_mode: full  #Default setting
-    when: "{{ sapp.type }}" == shared
-deployer_push_mode: local
-    when: "{{ sapp.type }}" == local
 
 splunk:
   - name: splunk_app
@@ -26,3 +20,17 @@ splunk:
 
 retry_num: 3
 retry_delay: 10
+
+# The following is for a possible future extension:
+  # If we ever wish to deploy a single local app then deployer_push_mode must be set to local
+  # ATM it's default is shared and it's not changed
+# tasks:
+#   - name: Set deployer_push_mode if sapp.type is shared
+#     set_fact:
+#       deployer_push_mode: full
+#     when: "{{ sapp.type }}" == shared
+
+#    - name: Set deployer_push_mode if sapp.type is local
+#     set_fact:
+#       deployer_push_mode: local
+#     when: "{{ sapp.type }}" == local

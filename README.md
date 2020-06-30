@@ -28,10 +28,10 @@ cd  .../SplunkAppUpdate
 Of playbooks
 
 ansible-playbook -kK get_app_from_deployer.yml --ask-vault-pass \
-    -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
+    -e sapp.name=${Application_Name}[,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 Edit the application
 ansible-playbook -kK put_app_to_deployer.yml --ask-vault-pass \
-    -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
+    -e sapp.name=${Application_Name}[,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 ### NB: 
 The above method assumes [despite what assuming does] that the apps tree is populated.
 ... If not, then the reloading of the deployment server will uninstall ${Application_Name}
