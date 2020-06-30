@@ -1,9 +1,9 @@
 # SplunkAppUpdate - README
+## Introduction
 Ansible playbooks to update an application that resides on the deployment server
 
 ## GIT
 cd ${BaseDir}
-
 git clone https://github.com/ahamilto156/SplunkAppUpdate.git
 
 ## Requirements
@@ -12,11 +12,8 @@ For any required Ansible roles, review:
 
 ## Hosts file
 cd  .../SplunkAppUpdate
-
 cp hosts_template.yml hosts
-
 sed -i s/"{{ Local_FQDN }}"/${Your_DomainName} hosts
-
 vim hosts ###for hosts configuration
 
 ##  Variables
@@ -25,19 +22,18 @@ vim hosts ###for hosts configuration
 ## Roles
 cd  .../SplunkAppUpdate
 ./initialiseRepo.sh
-
 ### NOTES:
 1/ ATM not needed as there are no roles to load. It is in there for consistancy's sake and to make it easier if roles are ever introduced into this playbook
 
 ## Execution
+Of playbooks
+
 ansible-playbook -kK get_app_from_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 Edit the application
 ansible-playbook -kK put_app_to_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
-
 ### NB: 
 The above method assumes [despite what assuming does] that the apps tree is populated.
 ... If not, then the reloading of the deployment server will uninstall ${Application_Name}
-
 ### NOTES:
 1/ ${TheLocationYouWant TheAppToBeModifiedFrom} = The directory where you wish to edit the application from 
     e.g. /home/${developer}/splunk_apps/${app_name}
@@ -51,7 +47,6 @@ Free
 
 # Author Information
 Andrew Hamilton MEngSc. (Elec.), Grad Dip. PM, BE (Comp.)
-
 Senior Consultant
 Red Hat
 
@@ -65,4 +60,4 @@ F: +61-2-6247-4380
 - Firstly:
       I would like to thank Geoff Gatward [GG] who patiently taught me much of what I know about Ansible
 - Secondly:
-      I would like to thank everyone that created roles that I utilise. These roles are listed in [roles/requirements.yml](roles/requirements.yml) 
+      I would like to thank everyone that created roles that I plagiarise and/or use.
