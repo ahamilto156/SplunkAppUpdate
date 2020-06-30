@@ -1,0 +1,45 @@
+---
+# The following playbook assumes [despite what assuming does] that the apps tree is populated.
+# ... If not, then the reloading of the deployment server will uninstall this application
+
+- name: Create archive on local server of app tree
+  hosts: localhost
+  become: no
+  #See "archive-doc archive" for src & dest. e.g's.
+  archive:
+    dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
+    src: "{{ sapp.edit.path }}/"
+    format: bz2
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: '0700'
+
+- name: Deploy a single (manually) update app
+  become: yes
+  become_user: "{{ splunk.user }}"
+  hosts: deployer
+  vars_files:
+  - vars/single_app_vars.yml
+  tasks:
+    - name: Copy app to deployer server via archive
+    include_tasks: 
+    - tasks/push_app.yml
+
+  - name: Intiate deployment on deployment server via reload
+    include_tasks: 
+    - tasks/initate_deployment.yml
+
+# According to Splunk's documentation for ver 8.0.4 for "" [https://docs.splunk.com/Documentation/Splunk/latest/Updating/Updateconfigurations]
+# ... we don't need to restart splunk, hence the three lines below are commented out...
+  # - name: Check whether splunk restart required
+  #   include_tasks: 
+  #     tasks/check_for_required_restarts.yml
+
+- name: Ensure developer's copy of the app directory is removed
+  hosts: localhost
+  become: no
+  tasks:
+  - name: Remove {{ sapp.edit.path }} directory on localhost
+    file:
+      dest: "{{ sapp.edit.path }}"
+      state: absent

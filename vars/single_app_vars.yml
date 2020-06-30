@@ -1,3 +1,6 @@
+  vars_files:
+  - splunk_vault.yml
+
 sapp:
   - name: blah
     type: shared
@@ -13,3 +16,13 @@ deployer_push_mode: full  #Default setting
     when: "{{ sapp.type }}" == shared
 deployer_push_mode: local
     when: "{{ sapp.type }}" == local
+
+splunk:
+  - name: splunk_app
+    base_dir: /opt/splunk
+    exec: "{{ splunk.based_dir }}/bin/splunk"
+    admin_user: splunk
+    password: "{{ vault_splunk_password }}"
+
+retry_num: 3
+retry_delay: 10

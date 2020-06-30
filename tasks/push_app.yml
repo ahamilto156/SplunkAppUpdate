@@ -1,0 +1,16 @@
+- name: Copy archived file to deployment server
+  include_tasks: tasks/put_app_onto_deployer.yml    
+
+- name: Unarchive app on deployer server
+
+- name: Unarchive the pushed bz2ball
+  vars_files:
+  - vars/single_app_vars.yml
+  tasks:
+  - name: Create {{ sapp.edit.path }} directory on localhost
+    unarchive:
+      src: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
+      dest: "{{ sapp.edit.path }}/"
+      owner: "{{ ansible_user_uid }}"
+      group: "{{ ansible_user_gid }}"
+      mode: '0700'

@@ -8,5 +8,4 @@
   retries: "{{ retry_num }}"
   delay: "{{ retry_delay }}"
   ignore_errors: yes
-  no_log: "{{ hide_password }}"
-  when: 
+  # no_log: "{{ hide_password }}"

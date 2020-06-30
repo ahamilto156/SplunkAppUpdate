@@ -20,19 +20,31 @@ sed -i s/"{{ Local_FQDN }}"/${Your_DomainName} hosts
 vim hosts ###for hosts configuration
 
 ##  Variables
-[defaults/main.yml](defaults/main.yml)
+[vars/single_apps_vars.yml](vars/single_apps_vars.yml)
 
+## Roles
 cd  .../SplunkAppUpdate
 ./initialiseRepo.sh
 
-## Method
+### NOTES:
+1/ ATM not needed as there are no roles to load. It is in there for consistancy's sake and to make it easier if roles are ever introduced into this playbook
+
+## Execution
 ansible-playbook -kK get_app_from_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 Edit the application
 ansible-playbook -kK put_app_to_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 
+### NB: 
+The above method assumes [despite what assuming does] that the apps tree is populated.
+... If not, then the reloading of the deployment server will uninstall ${Application_Name}
 
 ### NOTES:
-1/ The local is if it is a local app that is not to be deployed to ALL search heads
+1/ ${TheLocationYouWant TheAppToBeModifiedFrom} = The directory where you wish to edit the application from 
+    e.g. /home/${developer}/splunk_apps/${app_name}
+2/ sapp.type = 
+    a)          "local" => whether it is a local app that is not to be deployed to ALL search heads
+    b)          "shared" (default) => whether it is a shared app that is  to be deployed to ALL search heads that the deployment server
+                 knows about
 
 ## License
 Free
@@ -45,11 +57,8 @@ Red Hat
 
 A: L11, 40 Marcus Clarke Street,
     Canberra City, ACT, 2601, Australia
-
 E: andrew.hamilton@redhat.com  
-
 M: +61-477-242-645-[+61-477-ahamil]
-
 F: +61-2-6247-4380    
 
 # Acknowledgements

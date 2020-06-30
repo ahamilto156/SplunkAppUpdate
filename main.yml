@@ -1,3 +1,5 @@
 ---
 # Update a single app on the Splunk search heads via the deployer
-- import_playbook: deploy_single_app.yml
+- import_playbook: 
+  - get_app_from_deployer.yml
+  - put_app_onto_deployer.yml

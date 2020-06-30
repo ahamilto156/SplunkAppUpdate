@@ -1,0 +1,11 @@
+- name: Archive app tree on deployment server
+  #See "ansible-doc archive" for src & dest. e.g's.
+  archive:
+    path: "{{ sapp.location }}/{{ sapp.name }}"
+    dest: "{{ sapp.tempfile.archname }}"
+    format: bz2
+
+- name: Fetch archived app from deployment server
+  fetch:
+    src: "{{ sapp.tempfile.arch_name }}"
+    dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
