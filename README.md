@@ -12,7 +12,6 @@ For any required Ansible roles, review:
 
 ## Hosts file
 cd  .../SplunkAppUpdate
-cp hosts_template.yml hosts
 sed -i s/"{{ Local_FQDN }}"/${Your_DomainName} hosts
 vim hosts ###for hosts configuration
 
@@ -28,9 +27,11 @@ cd  .../SplunkAppUpdate
 ## Execution
 Of playbooks
 
-ansible-playbook -kK get_app_from_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
+ansible-playbook -kK get_app_from_deployer.yml --ask-vault-pass \
+    -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 Edit the application
-ansible-playbook -kK put_app_to_deployer.yml -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
+ansible-playbook -kK put_app_to_deployer.yml --ask-vault-pass \
+    -e sapp.name=${Application_Name}[,sapp.type=local][,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
 ### NB: 
 The above method assumes [despite what assuming does] that the apps tree is populated.
 ... If not, then the reloading of the deployment server will uninstall ${Application_Name}

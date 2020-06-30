@@ -1,0 +1,8 @@
+[deployer]
+deployer.{{ Local_FQDN }}
+
+[search heads]
+sh1.{{ Local_FQDN }}
+sh2.{{ Local_FQDN }}
+sh3.{{ Local_FQDN }}
+sh3.{{ Local_FQDN }}
