@@ -6,38 +6,54 @@
   hosts: localhost
   become: no
   #See "archive-doc archive" for src & dest. e.g's.
-  archive:
-    dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
-    src: "{{ sapp.edit.path }}/"
-    format: bz2
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
-    mode: '0700'
+  tasks:
+  - name: Create archive localhost:{{ sapp.edit.path }}/{{ sapp.name }}.bz2
+    archive:
+      path: "{{ sapp.edit.path }}/"
+      dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
+      format: bz2
+      owner: "{{ ansible_user_uid }}"
+      group: "{{ ansible_user_gid }}"
+      mode: '0700'
 
 - name: Deploy a single (manually) update app
+  hosts: deployer
   become: yes
   become_user: "{{ splunk.user }}"
-  hosts: deployer
   vars_files:
-  - vars/single_app_vars.yml
+    - splunk_vault.yml
+    - vars/single_app_vars.yml
   tasks:
-    - name: Copy app to deployer server via archive
-    include_tasks: 
-    - tasks/push_app.yml
+    # Copy app to deployer server via archive
+      - include_tasks: tasks/push_app.yml
 
-  - name: Intiate deployment on deployment server via reload
-    include_tasks: 
-    - tasks/initate_deployment.yml
+    # Intiate deployment on deployment server via reload of deployer server
+      - include_tasks: tasks/initate_deployment.yml
 
-# According to Splunk's documentation for ver 8.0.4 for "" [https://docs.splunk.com/Documentation/Splunk/latest/Updating/Updateconfigurations]
-# ... we don't need to restart splunk, hence the three lines below are commented out...
-  # - name: Check whether splunk restart required
-  #   include_tasks: 
-  #     tasks/check_for_required_restarts.yml
+# According to Splunk's documentation for ver 8.0.4 [https://docs.splunk.com/Documentation/Splunk/8.0.4/Updating/Updateconfigurations]
+# ... we don't need to restart splunk, hence the lines below are commented out...
+  # - pause:
+  #   minutes: 1  
+# 
+# - name: Restart splunk on servers that require it
+#   hosts: all
+#   become: yes
+#   tasks:
+#   - name: Check whether splunk restart required
+#     include_tasks: 
+#       tasks/check_for_required_restarts.yml
+  # 
+#   - name: Restart if required
+#     service:
+#       name: "{{ splunk.service }}"
+#       state: restarted
+
 
 - name: Ensure developer's copy of the app directory is removed
   hosts: localhost
   become: no
+  vars_files:
+    - vars/single_app_vars.yml
   tasks:
   - name: Remove {{ sapp.edit.path }} directory on localhost
     file:

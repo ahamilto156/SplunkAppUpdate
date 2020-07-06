@@ -14,9 +14,9 @@
       mode: '0700'
         
 - name: Get application from deployer
+  hosts: deployer
   become: yes
   become_user: "{{ splunk.user }}"
-  hosts: deployer
   vars_files:
   - vars/single_app_vars.yml
   tasks:

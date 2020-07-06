@@ -1,4 +1,4 @@
-include_vars: ../splunk_vault.yml
+# include_vars: ../splunk_vault.yml
 
 sapp:
   - name: "{{ sapp.name }}"
@@ -16,7 +16,12 @@ splunk:
     base_dir: /opt/splunk
     exec: "{{ splunk.based_dir }}/bin/splunk"
     admin_user: splunk
-    password: "{{ vault_splunk_password }}"
+    admin_password: "{{ vault_splunk_password }}"
+  - name: program
+    svc: Splunkd
+    svc_m_port: 8009
+    svc_w_port: 8000
+    svc_iirc_port: 8443
 
 retry_num: 3
 retry_delay: 10

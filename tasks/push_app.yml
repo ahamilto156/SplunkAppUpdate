@@ -3,13 +3,13 @@
 
 - name: Unarchive app on deployer server
 
-- name: Unarchive the pushed bz2ball
+- name: Unarchive the pushed {{ sapp.tempfile.arch_name }}
   vars_files:
   - vars/single_app_vars.yml
   tasks:
   - name: Create {{ sapp.edit.path }} directory on localhost
     unarchive:
-      src: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
+      src: "{{ sapp.tempfile.arch_name }}"
       dest: "{{ sapp.edit.path }}/"
       owner: "{{ ansible_user_uid }}"
       group: "{{ ansible_user_gid }}"
