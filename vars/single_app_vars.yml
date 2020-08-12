@@ -9,8 +9,10 @@ sapp:
       path: "{{ splunk_home }}/etc/apps/{{ sapp.type }}/{{ sapp.name }}"
     tempfile:
       path: "/var/tmp"
+      name: "{{ sapp.tempfile.path }}/{{ sapp.name }}"
       arch_name: "{{ sapp.tempfile.path }}/{{ sapp.name }}.bz2"
-    repo: https://splunk_app_repository.example.com
+      all_apps: "{{ sapp.tempfile.path }}/{{ repo_name }}"
+    repo: https://splunk_app_repository.example.com/path/to/repo_name.git
 
 splunk:
   - name: splunk_app

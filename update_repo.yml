@@ -1,18 +1,45 @@
 ---
 # This playbook is designed to download the application repository then update it
-#  by adding the application, just uploaded to the deployer
+#  by adding the application, just uploaded to the deployer, then push it back
 
 ##NOTE: All files are there already, so all we have to do is push them up to the repo
-- name: Push to repository
-  ## See GG's push to repo
-
-- name: Ensure developer's copy of the app directory is removed
+- name: Update {{ sapp.repo }}
   hosts: localhost
   become: no
   vars_files:
-    - vars/single_app_vars.yml
+    - vars/single_app_vars.yml  
   tasks:
-  - name: Remove {{ sapp.edit.path }} directory on localhost
+  - name: Remove any previous copies of {{ sapp.tempfile.all_apps }}
+    file:
+      dest: "{{ sapp.tempfile.all_apps }}"
+      state: absent
+    ignore_errors: yes
+
+  - name: Clone {{ sapp.repo }}
+    git:
+      repo: "{{ sapp.repo }}"
+      dest: "{{ sapp.tempfile.all_apps }}"
+      owner: "{{ ansible_user_uid }}"
+      group: "{{ ansible_user_gid }}"
+      mode: '0700'
+
+  - name: Copy file from {{ sapp.tempfile.path }}/{{ sapp.name }} to {{ sapp.tempfile.all_apps }}/{{ sapp.name }}
+    file:
+      src: "{{ sapp.tempfile.path }}/{{ sapp.name }}"
+      dest: "{{ sapp.tempfile.all_apps }}/{{ sapp.name }}"
+      owner: "{{ ansible_user_uid }}"
+      group: "{{ ansible_user_gid }}"
+      mode: '0700'
+
+  - name: Push to repository
+    ## See GG's push to repo
+
+  - name: Ensure developer's copy of the app directory i.e. {{ sapp.edit.path }} is removed
     file:
       dest: "{{ sapp.edit.path }}"
+      state: absent
+
+  - name: Remove any the current copy of {{ sapp.tempfile.all_apps }}
+    file:
+      dest: "{{ sapp.tempfile.all_apps }}"
       state: absent
