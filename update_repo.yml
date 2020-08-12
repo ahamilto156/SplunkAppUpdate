@@ -1,0 +1,18 @@
+---
+# This playbook is designed to download the application repository then update it
+#  by adding the application, just uploaded to the deployer
+
+##NOTE: All files are there already, so all we have to do is push them up to the repo
+- name: Push to repository
+  ## See GG's push to repo
+
+- name: Ensure developer's copy of the app directory is removed
+  hosts: localhost
+  become: no
+  vars_files:
+    - vars/single_app_vars.yml
+  tasks:
+  - name: Remove {{ sapp.edit.path }} directory on localhost
+    file:
+      dest: "{{ sapp.edit.path }}"
+      state: absent

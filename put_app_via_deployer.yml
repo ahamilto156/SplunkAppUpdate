@@ -47,15 +47,3 @@
 #     service:
 #       name: "{{ splunk.service }}"
 #       state: restarted
-
-
-- name: Ensure developer's copy of the app directory is removed
-  hosts: localhost
-  become: no
-  vars_files:
-    - vars/single_app_vars.yml
-  tasks:
-  - name: Remove {{ sapp.edit.path }} directory on localhost
-    file:
-      dest: "{{ sapp.edit.path }}"
-      state: absent

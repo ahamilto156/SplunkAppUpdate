@@ -10,6 +10,7 @@ sapp:
     tempfile:
       path: "/var/tmp"
       arch_name: "{{ sapp.tempfile.path }}/{{ sapp.name }}.bz2"
+    repo: https://splunk_app_repository.example.com
 
 splunk:
   - name: splunk_app
