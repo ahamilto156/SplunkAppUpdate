@@ -1,13 +1,4 @@
----
-- include_tasks: ../../../roles/splunk_common/tasks/enable_forwarding.yml
-
-- include_tasks: create_deployment_apps.yml
-  when:
-    - splunk.apps_location
-
-- include_tasks: generate_server_classes.yml
-
-- name: Reload deployment server
+- name: PutApp - Reload deployer if push mode is full
   command: "{{ splunk.exec }} reload deploy-server -auth {{ splunk.admin_user }}:{{ splunk.password }} -timeout {{ retry_delay * retry_num }}"
   become: yes
   become_user: "{{ splunk.user }}"
@@ -17,6 +8,4 @@
   retries: "{{ retry_num }}"
   delay: "{{ retry_delay }}"
   ignore_errors: yes
-  no_log: "{{ hide_password }}"
-
-- include_tasks: ../../../roles/splunk_common/tasks/check_for_required_restarts.yml
+  # no_log: "{{ hide_password }}"
