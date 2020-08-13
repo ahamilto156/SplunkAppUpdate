@@ -1,11 +1,11 @@
 ---
-- name: Ensure developer has a copy of the app directory where he/she wants it
+- name: GetApp - Ensure developer has a copy of the app directory where he/she wants it
   hosts: localhost
   become: no
   vars_files:
   - vars/single_app_vars.yml
   tasks:
-  - name: Create {{ sapp.edit.path }} directory on localhost
+  - name: GetApp - Create {{ sapp.edit.path }} directory on localhost
     file:
       dest: "{{ sapp.edit.path }}"
       state: directory
@@ -13,7 +13,7 @@
       group: "{{ ansible_user_gid }}"
       mode: '0700'
         
-- name: Get application from deployer
+- name: GetApp - Get application from deployer
   hosts: deployer
   become: yes
   become_user: "{{ splunk.user }}"
@@ -22,13 +22,13 @@
   tasks:
     - include_tasks: tasks/pull_app.yml
 
-- name: Unarchive the pulled bz2ball
+- name: GetApp - Unarchive the pulled bz2ball
   hosts: localhost
   become: no
   vars_files:
   - vars/single_app_vars.yml
   tasks:
-  - name: Create {{ sapp.edit.path }} directory on localhost
+  - name: GetApp - Create {{ sapp.edit.path }} directory on localhost
     unarchive:
       src: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
       dest: "{{ sapp.edit.path }}/"

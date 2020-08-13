@@ -2,12 +2,12 @@
 # The following playbook assumes [despite what assuming does] that the apps tree is populated.
 # ... If not, then the reloading of the deployment server will uninstall this application
 
-- name: Create archive on local server of app tree
+- name: PutApp - Create archive on local server of app tree
   hosts: localhost
   become: no
   #See "archive-doc archive" for src & dest. e.g's.
   tasks:
-  - name: Create archive localhost:{{ sapp.edit.path }}/{{ sapp.name }}.bz2
+  - name: PutApp - Create archive localhost:{{ sapp.edit.path }}/{{ sapp.name }}.bz2
     archive:
       path: "{{ sapp.edit.path }}/"
       dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
@@ -16,7 +16,7 @@
       group: "{{ ansible_user_gid }}"
       mode: '0700'
 
-- name: Deploy a single (manually) update app
+- name: PutApp - Deploy a single (manually) update app
   hosts: deployer
   become: yes
   become_user: "{{ splunk.user }}"
@@ -35,15 +35,15 @@
   # - pause:
   #   minutes: 1  
 # 
-# - name: Restart splunk on servers that require it
+# - name: PutApp - Restart splunk on servers that require it
 #   hosts: all
 #   become: yes
 #   tasks:
-#   - name: Check whether splunk restart required
+#   - name: PutApp - Check whether splunk restart required
 #     include_tasks: 
 #       tasks/check_for_required_restarts.yml
   # 
-#   - name: Restart if required
+#   - name: PutApp - Restart if required
 #     service:
 #       name: "{{ splunk.service }}"
 #       state: restarted

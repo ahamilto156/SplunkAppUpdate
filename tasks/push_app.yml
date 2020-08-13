@@ -1,11 +1,11 @@
-- name: Copy archived file to deployment server
+- name: PutApp - Copy archived file to deployment server
   include_tasks: tasks/put_app_onto_deployer.yml    
 
-- name: Unarchive the pushed {{ sapp.tempfile.arch_name }}
+- name: PutApp - Unarchive the pushed {{ sapp.tempfile.arch_name }}
   vars_files:
   - vars/single_app_vars.yml
   tasks:
-  - name: Create {{ sapp.edit.path }} directory on localhost
+  - name: PutApp - Create {{ sapp.edit.path }} directory on localhost
     unarchive:
       src: "{{ sapp.tempfile.arch_name }}"
       dest: "{{ sapp.edit.path }}/"

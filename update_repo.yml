@@ -9,13 +9,13 @@
   vars_files:
     - vars/single_app_vars.yml  
   tasks:
-  - name: Remove any previous copies of {{ sapp.tempfile.all_apps }}
+  - name: UpdateRepo - Remove any previous copies of {{ sapp.tempfile.all_apps }}
     file:
       dest: "{{ sapp.tempfile.all_apps }}"
       state: absent
     ignore_errors: yes
 
-  - name: Clone {{ sapp.repo }}
+  - name: UpdateRepo - Clone {{ sapp.repo }}
     git:
       repo: "{{ sapp.repo }}"
       dest: "{{ sapp.tempfile.all_apps }}"
@@ -23,7 +23,7 @@
       group: "{{ ansible_user_gid }}"
       mode: '0700'
 
-  - name: Copy file from {{ sapp.tempfile.path }}/{{ sapp.name }} to {{ sapp.tempfile.all_apps }}/{{ sapp.name }}
+  - name: UpdateRepo - Copy file from {{ sapp.tempfile.path }}/{{ sapp.name }} to {{ sapp.tempfile.all_apps }}/{{ sapp.name }}
     file:
       src: "{{ sapp.tempfile.path }}/{{ sapp.name }}"
       dest: "{{ sapp.tempfile.all_apps }}/{{ sapp.name }}"
@@ -31,15 +31,15 @@
       group: "{{ ansible_user_gid }}"
       mode: '0700'
 
-  - name: Push to repository
+  - name: UpdateRepo - Push to repository
     ## See GG's push to repo
 
-  - name: Ensure developer's copy of the app directory i.e. {{ sapp.edit.path }} is removed
+  - name: UpdateRepo - Ensure developer's copy of the app directory i.e. {{ sapp.edit.path }} is removed
     file:
       dest: "{{ sapp.edit.path }}"
       state: absent
 
-  - name: Remove any the current copy of {{ sapp.tempfile.all_apps }}
+  - name: UpdateRepo - Remove any the current copy of {{ sapp.tempfile.all_apps }}
     file:
       dest: "{{ sapp.tempfile.all_apps }}"
       state: absent

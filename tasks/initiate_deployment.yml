@@ -1,4 +1,4 @@
-- name: Reload deployer if push mode is full
+- name: PutApp - Reload deployer if push mode is full
   command: "{{ splunk.exec }} reload deploy-server -auth {{ splunk.admin_user }}:{{ splunk.password }} -timeout {{ retry_delay * retry_num }}"
   become: yes
   become_user: "{{ splunk.user }}"
