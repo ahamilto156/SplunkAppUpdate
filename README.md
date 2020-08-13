@@ -4,6 +4,7 @@ Ansible playbooks to update an application that resides on the deployment server
 
 ## GIT
 cd ${BaseDir}
+
 git clone https://github.com/ahamilto156/SplunkAppUpdate.git
 
 ## Requirements
@@ -12,7 +13,9 @@ For any required Ansible roles, review:
 
 ## Hosts file
 cd  .../SplunkAppUpdate
+
 sed -i s/"{{ Local_FQDN }}"/${Your_DomainName} hosts
+
 vim hosts ###for hosts configuration
 
 ##  Variables
@@ -20,7 +23,9 @@ vim hosts ###for hosts configuration
 
 ## Roles
 cd  .../SplunkAppUpdate
+
 ./initialiseRepo.sh
+
 ### NOTES:
 1/ ATM not needed as there are no roles to load. It is in there for consistancy's sake and to make it easier if roles are ever introduced into this playbook
 
