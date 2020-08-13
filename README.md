@@ -26,25 +26,35 @@ cd  .../SplunkAppUpdate
 
 ./initialiseRepo.sh
 
-### NOTES:
-1/ ATM not needed as there are no roles to load. It is in there for consistancy's sake and to make it easier if roles are ever introduced into this playbook
+### NOTE
+- ATM not needed as there are no roles to load. It is in there for consistancy's sake and to make it easier if roles are ever introduced into this playbook
 
 ## Execution
-Of playbooks
+Of playbooks;
 
 ansible-playbook -kK get_app_from_deployer.yml --ask-vault-pass \
+
     -e sapp.name=${Application_Name}[,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
-Edit the application
+    
+Edit the application;
+
 ansible-playbook -kK put_app_to_deployer.yml --ask-vault-pass \
+
     -e sapp.name=${Application_Name}[,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
-### NB: 
+    
+### NB
 The above method assumes [despite what assuming does] that the apps tree is populated.
+
 ... If not, then the reloading of the deployment server will uninstall ${Application_Name}
-### NOTES:
+### NOTES
+
 1/ ${TheLocationYouWant TheAppToBeModifiedFrom} = The directory where you wish to edit the application from 
+
     e.g. /home/${developer}/splunk_apps/${app_name}
 2/ sapp.type = 
+
     a)          "local" => whether it is a local app that is not to be deployed to ALL search heads
+    
     b)          "shared" (default) => whether it is a shared app that is  to be deployed to ALL search heads that the deployment server
                  knows about
 
