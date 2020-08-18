@@ -1,4 +1,4 @@
-# include_vars: ../splunk_vault.yml
+include_vars: ../splunk_vault.yml
 
 sapp:
   - name: "{{ sapp.name }}"
