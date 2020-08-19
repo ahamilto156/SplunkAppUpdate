@@ -47,7 +47,7 @@ ansible-playbook -kK put_app_via_deployer.yml --ask-vault-pass \
 ### NB
 The above method assumes [despite what assuming does] that the apps tree is populated.
 
-... If not, then the reloading of the deployment server will uninstall ${Application_Name}
+... If not, then the reloading of the deployment server will uninstall ALL except ${Application_Name}
 
 ### NOTES
 
