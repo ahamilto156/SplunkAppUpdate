@@ -1,7 +1,7 @@
 - name: PutApp - Reload deployer if push mode is full
-  command: "{{ splunk.exec }} reload deploy-server -auth {{ splunk.admin_user }}:{{ splunk.password }} -timeout {{ retry_delay * retry_num }}"
+  command: "{{ sapp.splunk_prog.exec }} reload deploy-server -auth {{ sapp.splunk_prog.admin_user }}:{{ sapp.splunk_prog.password }} -timeout {{ retry_delay * retry_num }}"
   become: yes
-  become_user: "{{ splunk.user }}"
+  become_user: "{{ sapp.splunk_prog.admin_user }}"
   register: reload_depserver
   until: reload_depserver.rc == 0
   changed_when: reload_depserver.rc == 0

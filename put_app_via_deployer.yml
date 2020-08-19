@@ -7,10 +7,14 @@
   become: no
   #See "archive-doc archive" for src & dest. e.g's.
   tasks:
-  - name: PutApp - Create archive localhost:{{ sapp.edit.path }}/{{ sapp.name }}.bz2
+  # - name: Test
+  #   debug: 
+  #     msg: "{{ sapp.splunk_prog }}"
+
+  - name: PutApp - Create archive localhost:{{ sapp_name.app_edit_path }}/{{ sapp_name }}.bz2
     archive:
-      path: "{{ sapp.edit.path }}/"
-      dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
+      path: "{{ sapp_name.app_edit_path }}/"
+      dest: "{{ sapp_name.app_edit_path }}/{{ sapp_name }}.bz2"
       format: bz2
       owner: "{{ ansible_user_uid }}"
       group: "{{ ansible_user_gid }}"
@@ -19,10 +23,11 @@
 - name: PutApp - Deploy a single (manually) update app
   hosts: deployer
   become: yes
-  become_user: "{{ splunk.user }}"
+  become_user: "{{ splunk_prog.admin_user }}"
   vars_files:
-    - splunk_vault.yml
-    - vars/single_app_vars.yml
+  - splunk_vault.yml
+  - vars/single_app_vars.yml
+  
   tasks:
     # Copy app to deployer server via archive
       - include_tasks: tasks/push_app.yml
@@ -45,5 +50,5 @@
   # 
 #   - name: PutApp - Restart if required
 #     service:
-#       name: "{{ splunk.service }}"
+#       name: "{{ sapp_name.service.svc }}"
 #       state: restarted

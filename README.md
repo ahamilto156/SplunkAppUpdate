@@ -30,22 +30,25 @@ cd  .../SplunkAppUpdate
 - ATM not needed as there are no roles to load. It is in there for consistancy's sake and to make it easier if roles are ever introduced into this playbook
 
 ## Execution
-Of playbooks;
+1/ Run the Get App playbook
 
 ansible-playbook -kK get_app_from_deployer.yml --ask-vault-pass \
 
-    -e sapp.name=${Application_Name}[,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
+    -e sapp_name=${Application_Name}[,sapp_edit_path=${TheLocationYouWantTheAppToBeEditedFrom}]
     
-Edit the application;
+2/ Edit the application;
 
-ansible-playbook -kK put_app_to_deployer.yml --ask-vault-pass \
+3/ Run the Get App playbook
 
-    -e sapp.name=${Application_Name}[,app.developers.locn=${TheLocationYouWant TheAppToBeModifiedFrom}]
+ansible-playbook -kK put_app_via_deployer.yml --ask-vault-pass \
+
+    -e sapp_name=${Application_Name}[,sapp_edit_path=${TheLocationYouWantTheAppToBeEditedFrom}]
     
 ### NB
 The above method assumes [despite what assuming does] that the apps tree is populated.
 
 ... If not, then the reloading of the deployment server will uninstall ${Application_Name}
+
 ### NOTES
 
 1/ ${TheLocationYouWant TheAppToBeModifiedFrom} = The directory where you wish to edit the application from 
