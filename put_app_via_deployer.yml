@@ -5,16 +5,16 @@
 - name: PutApp - Create archive on local server of app tree
   hosts: localhost
   become: no
+  vars_files:
+  - splunk_vault.yml
+  - vars/single_app_vars.yml
   #See "archive-doc archive" for src & dest. e.g's.
+  
   tasks:
-  # - name: Test
-  #   debug: 
-  #     msg: "{{ sapp.splunk_prog }}"
-
-  - name: PutApp - Create archive localhost:{{ sapp_name.app_edit_path }}/{{ sapp_name }}.bz2
+  - name: PutApp - Create archive localhost:"{{ splunk_app.edit_path }}/{{ splunk_app.name }}".bz2
     archive:
-      path: "{{ sapp_name.app_edit_path }}/"
-      dest: "{{ sapp_name.app_edit_path }}/{{ sapp_name }}.bz2"
+      path: "{{ splunk_app.edit_path }}/"
+      dest: "{{ splunk_app.edit_path }}/{{ splunk_app.name }}.bz2"
       format: bz2
       owner: "{{ ansible_user_uid }}"
       group: "{{ ansible_user_gid }}"
@@ -27,7 +27,7 @@
   vars_files:
   - splunk_vault.yml
   - vars/single_app_vars.yml
-  
+
   tasks:
     # Copy app to deployer server via archive
       - include_tasks: tasks/push_app.yml
@@ -50,5 +50,5 @@
   # 
 #   - name: PutApp - Restart if required
 #     service:
-#       name: "{{ sapp_name.service.svc }}"
+#       name: "{{ splunk_app.service.svc }}"
 #       state: restarted

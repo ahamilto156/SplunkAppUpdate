@@ -34,7 +34,7 @@ cd  .../SplunkAppUpdate
 
 ansible-playbook -kK get_app_from_deployer.yml --ask-vault-pass \
 
-    -e sapp_name=${Application_Name}[,sapp_edit_path=${TheLocationYouWantTheAppToBeEditedFrom}]
+    -e sapp_name=${Application_Name}[,sapp_edit_path=${LocnTheAppIsToBeEditedFrom}]
     
 2/ Edit the application;
 
@@ -42,7 +42,7 @@ ansible-playbook -kK get_app_from_deployer.yml --ask-vault-pass \
 
 ansible-playbook -kK put_app_via_deployer.yml --ask-vault-pass \
 
-    -e sapp_name=${Application_Name}[,sapp_edit_path=${TheLocationYouWantTheAppToBeEditedFrom}]
+    -e sapp_name=${Application_Name}[,sapp_edit_path=${LocnTheAppIsToBeEditedFrom}]
     
 ### NB
 The above method assumes [despite what assuming does] that the apps tree is populated.

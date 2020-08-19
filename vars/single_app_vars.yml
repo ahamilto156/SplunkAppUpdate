@@ -1,16 +1,16 @@
-include_vars: ../splunk_vault.yml
-
+#------------------------------------------------------------------------------
 # Editable vars
 splunk_home: /opt/splunk
 sapp_type: shared
 sapp_edit_path: "{{ ansible_user_dir }}/{{ sapp_name }}"
 sapp_temp_path: /var/tmp
 repo_name: TBA
+
 ## NOTES: 
 ##       1/ sapp_name MUST be defined when playbook called 
 ##       2/ sapp_edit_path maybe defined when playbook called 
 ##       See README
-
+#------------------------------------------------------------------------------
 
 # The following is for a possible future extension:
   # If we ever wish to deploy a single local app then deployer_push_mode must be set to local
@@ -26,26 +26,30 @@ repo_name: TBA
 #       deployer_push_mode: local
 #     when: "{{ sapp.type }}" == local
 
-sapp:
-  - name: "{{ sapp_name }}"
-    type: "{{ sapp_type }}"
-    app_edit_path: "{{ sapp_edit_path }}"
-    app_source_path: "{{ splunk_home }}/etc/apps/{{ sapp_type }}/{{ sapp_name }}"
-    tempfile:
-      name: "{{ sapp_temp_path }}/{{ sapp_name }}"
-      path: "{{ sapp_temp_path }}"
-      arch_name: "{{ sapp_temp_path }}/{{ sapp_name }}.bz2"
-      all_apps: "{{ sapp_temp_path }}/{{ repo_name }}"
-    repo: https://splunk_app_repository.example.com/path/to/repo_name.git
-  - name: splunk_prog
+splunk_app:
+  name: "{{ sapp_name }}"
+  type: "{{ sapp_type }}"
+  edit_path: "{{ sapp_edit_path }}"
+  source_path: "{{ splunk_home }}/etc/apps/{{ sapp_type }}/{{ sapp_name }}"
+  tempfile:
+    name: "{{ sapp_temp_path }}/{{ sapp_name }}"
+    path: "{{ sapp_temp_path }}"
+    arch_name: "{{ sapp_temp_path }}/{{ sapp_name }}.bz2"
+    all_apps: "{{ sapp_temp_path }}/{{ repo_name }}"
+  repo: https://splunk_app_repository.example.com/path/to/{{ repo_name }}.git
+
+splunk:
+  program:
     exec: "{{ splunk_home }}/bin/splunk"
-    admin_user: splunk
-    admin_password: "{{ vault_splunk_password }}"
-  - name: service
-    svc: Splunkd
-    svc_m_port: 8009
-    svc_w_port: 8000
-    svc_iirc_port: 8443
+  admin:
+    user: splunk
+    password: "{{ vault_splunk_password }}"
+  service:
+    name: Splunkd
+  ports:
+    main: 8009
+    web: 8000
+    iirc: 8443
 
 retry_num: 3
 retry_delay: 10
