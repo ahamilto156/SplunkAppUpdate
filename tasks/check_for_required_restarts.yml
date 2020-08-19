@@ -1,10 +1,10 @@
 ---
 - name: Check for required restarts
   uri:
-    url: "{{ cert_prefix }}://127.0.0.1:{{ splunk.svc_w_port }}/services/messages/restart_required?output_mode=json"
+    url: "{{ cert_prefix }}://127.0.0.1:{{ sapp.service.svc_w_port }}/services/messages/restart_required?output_mode=json"
     method: GET
-    user: "{{ splunk.admin_user }}"
-    password: "{{ splunk.admin_password }}"
+    user: "{{ sapp.splunk_prog.admin_user }}"
+    password: "{{ sapp.splunk_prog.admin_password }}"
     validate_certs: false
     status_code: 200,404
     timeout: 10

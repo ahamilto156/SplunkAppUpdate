@@ -3,11 +3,13 @@
   hosts: localhost
   become: no
   vars_files:
+  - splunk_vault.yml
   - vars/single_app_vars.yml
+
   tasks:
-  - name: GetApp - Create {{ sapp.edit.path }} directory on localhost
+  - name: GetApp - Create {{ splunk_app.edit_path }} directory on localhost
     file:
-      dest: "{{ sapp.edit.path }}"
+      dest: "{{ splunk_app.edit_path }}"
       state: directory
       owner: "{{ ansible_user_uid }}"
       group: "{{ ansible_user_gid }}"
@@ -16,9 +18,11 @@
 - name: GetApp - Get application from deployer
   hosts: deployer
   become: yes
-  become_user: "{{ splunk.user }}"
+  become_user: "{{ splunk.admin.user }}"
   vars_files:
+  - splunk_vault.yml
   - vars/single_app_vars.yml
+  
   tasks:
     - include_tasks: tasks/pull_app.yml
 
@@ -26,12 +30,14 @@
   hosts: localhost
   become: no
   vars_files:
+  - splunk_vault.yml
   - vars/single_app_vars.yml
+
   tasks:
-  - name: GetApp - Create {{ sapp.edit.path }} directory on localhost
+  - name: GetApp - Unarchive {{ splunk_app.name }}.bz2 to {{ splunk_app.name }} directory on localhost
     unarchive:
-      src: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
-      dest: "{{ sapp.edit.path }}/"
+      src: "{{ splunk_app.edit_path }}/{{ splunk_app.name }}.bz2"
+      dest: "{{ splunk_app.edit_path }}/"
       owner: "{{ ansible_user_uid }}"
       group: "{{ ansible_user_gid }}"
       mode: '0700'

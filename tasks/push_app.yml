@@ -3,7 +3,9 @@
 
 - name: PutApp - Unarchive the pushed {{ sapp.tempfile.arch_name }}
   vars_files:
+  - splunk_vault.yml
   - vars/single_app_vars.yml
+  
   tasks:
   - name: PutApp - Create {{ sapp.edit.path }} directory on localhost
     unarchive:

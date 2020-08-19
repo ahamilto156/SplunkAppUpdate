@@ -7,7 +7,9 @@
   hosts: localhost
   become: no
   vars_files:
-    - vars/single_app_vars.yml  
+  - splunk_vault.yml
+  - vars/single_app_vars.yml
+  
   tasks:
   - name: UpdateRepo - Remove any previous copies of {{ sapp.tempfile.all_apps }}
     file:
