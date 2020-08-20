@@ -1,16 +1,9 @@
-- name: PutApp - Copy archived file to deployment server
-  include_tasks: tasks/put_app_onto_deployer.yml    
+---
 
-- name: PutApp - Unarchive the pushed {{ sapp.tempfile.arch_name }}
-  vars_files:
-  - splunk_vault.yml
-  - vars/single_app_vars.yml
-  
-  tasks:
-  - name: PutApp - Create {{ sapp.edit.path }} directory on localhost
-    unarchive:
-      src: "{{ sapp.tempfile.arch_name }}"
-      dest: "{{ sapp.edit.path }}/"
-      owner: "{{ ansible_user_uid }}"
-      group: "{{ ansible_user_gid }}"
-      mode: '0700'
+- name: PutApp - Push back to deployer
+  unarchive:
+    src: "{{ splunk_app.edit_path }}/{{ splunk_app.name }}.bz2"
+    dest: "{{ splunk_app.source_path }}"
+    owner: "{{ splunk.admin.user }}"
+    group: "{{ splunk.admin.user }}"
+    mode: '0700'
