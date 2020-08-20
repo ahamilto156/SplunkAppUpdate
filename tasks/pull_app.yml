@@ -1,11 +1,17 @@
 - name: GetApp - Archive app tree on deployment server
   #See "ansible-doc archive" for src & dest. e.g's.
   archive:
-    path: "{{ sapp.location }}/{{ sapp.name }}/"
-    dest: "{{ sapp.tempfile.arch_name }}"
+    path: "{{ splunk_app.source_path }}/"
+    dest: "/tmp/{{ splunk_app.tempfile.arch_name }}.bz2"
     format: bz2
 
 - name: GetApp - Fetch archived app from deployment server
   fetch:
-    src: "{{ sapp.tempfile.arch_name }}"
-    dest: "{{ sapp.edit.path }}/{{ sapp.name }}.bz2"
+    src: "/tmp/{{ splunk_app.tempfile.arch_name }}.bz2"
+    dest: "{{ splunk_app.edit_path }}"
+
+- name: GetApp - Remove temporary archive /tmp/{{ splunk_app.tempfile.arch_name }}.bz2
+  file:
+    dest: "/tmp/{{ splunk_app.tempfile.arch_name }}.bz2"
+    state: absent
+  ignore_errors: yes    

@@ -6,10 +6,9 @@
   hosts: localhost
   become: no
   vars_files:
-  - splunk_vault.yml
+  - vars/splunk_vault.yml
   - vars/single_app_vars.yml
   #See "archive-doc archive" for src & dest. e.g's.
-  
   tasks:
   - name: PutApp - Create archive localhost:"{{ splunk_app.edit_path }}/{{ splunk_app.name }}".bz2
     archive:
@@ -25,14 +24,10 @@
   become: yes
   become_user: "{{ splunk_prog.admin_user }}"
   vars_files:
-  - splunk_vault.yml
+  - vars/splunk_vault.yml
   - vars/single_app_vars.yml
-
   tasks:
-    # Copy app to deployer server via archive
       - include_tasks: tasks/push_app.yml
-
-    # Intiate deployment on deployment server via reload of deployer server
       - include_tasks: tasks/initate_deployment.yml
 
 # According to Splunk's documentation for ver 8.0.4 [https://docs.splunk.com/Documentation/Splunk/8.0.4/Updating/Updateconfigurations]
@@ -43,9 +38,8 @@
 # - name: PutApp - Restart splunk on servers that require it
 #   hosts: all
 #   become: yes
-#   tasks:
-#   - name: PutApp - Check whether splunk restart required
-#     include_tasks: 
+  # tasks:
+  #   - include_tasks: 
 #       tasks/check_for_required_restarts.yml
   # 
 #   - name: PutApp - Restart if required

@@ -3,9 +3,8 @@
   hosts: localhost
   become: no
   vars_files:
-  - splunk_vault.yml
+  - vars/splunk_vault.yml
   - vars/single_app_vars.yml
-
   tasks:
   - name: GetApp - Create {{ splunk_app.edit_path }} directory on localhost
     file:
@@ -20,9 +19,8 @@
   become: yes
   become_user: "{{ splunk.admin.user }}"
   vars_files:
-  - splunk_vault.yml
+  - vars/splunk_vault.yml
   - vars/single_app_vars.yml
-  
   tasks:
     - include_tasks: tasks/pull_app.yml
 
@@ -30,9 +28,8 @@
   hosts: localhost
   become: no
   vars_files:
-  - splunk_vault.yml
+  - vars/splunk_vault.yml
   - vars/single_app_vars.yml
-
   tasks:
   - name: GetApp - Unarchive {{ splunk_app.name }}.bz2 to {{ splunk_app.name }} directory on localhost
     unarchive:
